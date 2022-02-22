@@ -1,8 +1,15 @@
 import SwiftUI
 
-public enum Tag {
+public enum _Tag {
   case tagged(AnyHashable)
   case untagged
+
+  var value: AnyHashable? {
+    if case let .tagged(value) = self {
+      return value
+    }
+    return nil
+  }
 }
 
 public struct _Picker<Label: View, Content: View, Selection: Hashable>: View {
@@ -53,7 +60,7 @@ public struct _Picker<Label: View, Content: View, Selection: Hashable>: View {
     typealias ChildView = Children.Element
     
     let selection: Selection
-    let option: (Configuration.Option, Tag) -> Configuration.Option
+    let option: (Configuration.Option, _Tag) -> Configuration.Option
     
     func body(children: Children) -> some View {
       ForEach(makeTaggedViews(children), id: \.view.id) { tagged in
@@ -61,7 +68,7 @@ public struct _Picker<Label: View, Content: View, Selection: Hashable>: View {
       }
     }
     
-    func makeTaggedViews(_ views: Children) -> [(view: ChildView, tag: Tag)] {
+    func makeTaggedViews(_ views: Children) -> [(view: ChildView, tag: _Tag)] {
       views.compactMap { view in
         guard let tag: Selection = view._traits.tags().first else {
           return (view, .untagged)
