@@ -6,7 +6,7 @@ extension View {
   }
 }
 
-fileprivate struct _PickerStyleKey: EnvironmentKey {
+private struct _PickerStyleKey: EnvironmentKey {
   fileprivate static var defaultValue = _AnyPickerStyle(.automatic)
 }
 
