@@ -2,7 +2,14 @@
 
 A better SwiftUI Picker. Use `_Picker` instead of `Picker`. Create styles with `_PickerStyle`.
 
-## Example
+### The is a WIP
+This library is currently a work-in-progress with regards to ironing out the API & documentation.
+Once both are in a good state a release will be cut. Until then you can point to `main` and deal with 
+an unstable interface! Bug reports, testing, ideas, pull requests, and more are welcome!
+
+## Examples
+You can find examples in the [`BetterPickerExamples`](BetterPickerExamples.swiftpm) App Playground. 
+
 ```swift
 import SwiftUI
 import BetterPicker
@@ -79,7 +86,7 @@ struct ArrowStyle: _PickerStyle {
     @ViewBuilder
     func makeOption(
       _ option: Configuration.Option,
-      _ tag: Tag
+      _ tag: _Tag
     ) -> some View {
       switch tag {
       case let .tagged(tag):
