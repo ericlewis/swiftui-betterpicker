@@ -11,7 +11,7 @@ public struct _PickerStyleConfiguration {
 
   public struct Option: View {
     private let _view: AnyView
-    internal init<V: View>(_ view: V) {
+    public init<V: View>(_ view: V) {
       self._view = AnyView(view)
     }
     public var body: some View { _view }
