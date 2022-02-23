@@ -41,7 +41,7 @@ extension _PickerStyle where Self == ArrowStyle {
 }
 
 struct ArrowStyle: _PickerStyle {
-  func makeBody(configuration: Configuration<Self.SelectionValue>) -> some View {
+  func makeBody(configuration: Configuration<Self._SelectionValue>) -> some View {
     Style(configuration: configuration)
   }
 
@@ -70,7 +70,7 @@ struct ArrowStyle: _PickerStyle {
     @ViewBuilder
     func makeOption(
       _ option: Configuration<SelectionValue>.Option,
-      _ tag: _Tag
+      _ tag: _Tag<SelectionValue>
     ) -> some View {
       switch tag {
       case let .tagged(tag):

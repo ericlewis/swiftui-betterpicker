@@ -40,8 +40,18 @@ extension _PickerStyle where Self == GridPickerStyle {
   static var grid: GridPickerStyle { .init() }
 }
 
+// TODO: finish idea
+struct PickerValue<Style: _PickerStyle, SelectionValue>: View where SelectionValue == Style.SelectionValue {
+  var style: Style
+  var configuration: _PickerStyleConfiguration<SelectionValue>
+
+  var body: some View {
+    style.makeBody(configuration: configuration)
+  }
+}
+
 struct GridPickerStyle: _PickerStyle {
-  func makeBody(configuration: Configuration<Self.SelectionValue>) -> some View {
+  func makeBody(configuration: Configuration<Self._SelectionValue>) -> some View {
     Style(configuration: configuration)
   }
 
@@ -59,7 +69,7 @@ struct GridPickerStyle: _PickerStyle {
     @ViewBuilder
     func makeOption(
       _ option: Configuration<SelectionValue>.Option,
-      _ tag: _Tag
+      _ tag: _Tag<SelectionValue>
     ) -> some View {
       switch tag {
       case let .tagged(tag):

@@ -7,5 +7,6 @@ public protocol _PickerStyle {
   func makeBody(configuration: Configuration<SelectionValue>) -> Self.Body
 
   typealias Configuration = _PickerStyleConfiguration
-  typealias SelectionValue = AnyHashable
+  typealias _SelectionValue = AnyHashable
+  associatedtype SelectionValue: Hashable
 }

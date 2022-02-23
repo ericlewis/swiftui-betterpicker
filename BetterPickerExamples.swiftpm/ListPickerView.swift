@@ -31,7 +31,7 @@ extension _PickerStyle where Self == ListPickerStyle {
 struct ListPickerStyle: _PickerStyle {
   let title: LocalizedStringKey
 
-  func makeBody(configuration: Configuration<Self.SelectionValue>) -> some View {
+  func makeBody(configuration: Configuration<Self._SelectionValue>) -> some View {
     Style(configuration: configuration, title: title)
   }
 
@@ -54,7 +54,10 @@ struct ListPickerStyle: _PickerStyle {
     }
 
     @ViewBuilder
-    func makeBadge(_ option: Configuration<SelectionValue>.Option, _ tag: _Tag) -> some View {
+    func makeBadge(
+      _ option: Configuration<SelectionValue>.Option,
+      _ tag: _Tag<SelectionValue>
+    ) -> some View {
       switch tag {
       case let .tagged(tag):
         if tag == configuration.selection {
@@ -89,7 +92,7 @@ struct ListPickerStyle: _PickerStyle {
     @ViewBuilder
     func makeOption(
       _ option: Configuration<SelectionValue>.Option,
-      _ tag: _Tag
+      _ tag: _Tag<SelectionValue>
     ) -> some View {
       switch tag {
       case let .tagged(tag):
