@@ -28,6 +28,6 @@ public struct _PickerStyleConfiguration<SelectionValue: Hashable> {
   @Binding
   public var selection: SelectionValue
   public let options: Content
-  public let content: (@escaping (Option, _Tag<SelectionValue>) -> Option) -> Content
+  public let content: (@escaping (Option, _Tag) -> Option) -> Content
   public let label: Label
 }

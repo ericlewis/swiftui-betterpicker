@@ -1,8 +1,8 @@
 import SwiftUI
 
 extension View {
-  public func pickerStyle<S: _PickerStyle>(_ style: S) -> some View where S.SelectionValue == AnyHashable {
-    environment(\._pickerStyle, _AnyPickerStyle<AnyHashable>(style))
+  public func pickerStyle<S: _PickerStyle>(_ style: S) -> some View {
+    environment(\._pickerStyle, _AnyPickerStyle(style) as! _AnyPickerStyle<AnyHashable>)
   }
 }
 

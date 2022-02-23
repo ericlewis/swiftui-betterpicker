@@ -1,10 +1,10 @@
 import SwiftUI
 
-public enum _Tag<Value: Hashable> {
-  case tagged(Value)
+public enum _Tag {
+  case tagged(AnyHashable)
   case untagged
 
-  var value: Value? {
+  var value: AnyHashable? {
     if case let .tagged(value) = self {
       return value
     }
@@ -16,7 +16,7 @@ public struct _Picker<Label: View, Content: View, SelectionValue: Hashable>: Vie
   private typealias Configuration = _PickerStyleConfiguration<AnyHashable>
 
   @Binding
-  private var selection: SelectionValue
+  private var selection: AnyHashable
 
   @Environment(\._pickerStyle)
   private var style
@@ -29,7 +29,7 @@ public struct _Picker<Label: View, Content: View, SelectionValue: Hashable>: Vie
     @ViewBuilder content: () -> Content,
     @ViewBuilder label: () -> Label
   ) {
-    self._selection = selection
+    self._selection = .init(selection)
     self.content = content()
     self.label = label()
   }
@@ -37,13 +37,12 @@ public struct _Picker<Label: View, Content: View, SelectionValue: Hashable>: Vie
   public var body: some View {
     style.makeBody(
       configuration: Configuration(
-        selection: .init($selection),
+        selection: $selection,
         options: .init(content),
         content: { option in
           Configuration.Content(
             _VariadicView.Tree(
               Root(
-                selection: selection,
                 option: option
               ),
               content: { content }
@@ -57,11 +56,9 @@ public struct _Picker<Label: View, Content: View, SelectionValue: Hashable>: Vie
 
   private struct Root: _VariadicView.MultiViewRoot {
     typealias Children = _VariadicView.Children
-    typealias ChildView = Children.Element
-    typealias Option = Configuration.Option
+    typealias Child = Children.Element
 
-    let selection: SelectionValue
-    let option: (Option, _Tag<AnyHashable>) -> Option
+    let option: (Configuration.Option, _Tag) -> Configuration.Option
 
     func body(children: Children) -> some View {
       ForEach(makeTaggedViews(children), id: \.view.id) { tagged in
@@ -69,7 +66,7 @@ public struct _Picker<Label: View, Content: View, SelectionValue: Hashable>: Vie
       }
     }
 
-    func makeTaggedViews(_ views: Children) -> [(view: ChildView, tag: _Tag<AnyHashable>)] {
+    func makeTaggedViews(_ views: Children) -> [(view: Child, tag: _Tag)] {
       views.compactMap { view in
         guard let tag: SelectionValue = view._traits.tags().first else {
           return (view, .untagged)

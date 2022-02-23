@@ -56,7 +56,7 @@ struct ListPickerStyle: _PickerStyle {
     @ViewBuilder
     func makeBadge(
       _ option: Configuration<SelectionValue>.Option,
-      _ tag: _Tag<SelectionValue>
+      _ tag: _Tag
     ) -> some View {
       switch tag {
       case let .tagged(tag):
@@ -92,7 +92,7 @@ struct ListPickerStyle: _PickerStyle {
     @ViewBuilder
     func makeOption(
       _ option: Configuration<SelectionValue>.Option,
-      _ tag: _Tag<SelectionValue>
+      _ tag: _Tag
     ) -> some View {
       switch tag {
       case let .tagged(tag):
