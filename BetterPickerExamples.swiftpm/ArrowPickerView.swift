@@ -59,8 +59,8 @@ struct ArrowStyle: _PickerStyle {
           .selectionGuide()
           .foregroundColor(.accentColor)
         VStack(alignment: .leading) {
-          configuration.content { view, tag in
-              .init(makeOption(view, tag))
+          configuration.content { view in
+              .init(makeOption(view))
           }
         }
       }
@@ -69,10 +69,9 @@ struct ArrowStyle: _PickerStyle {
 
     @ViewBuilder
     func makeOption(
-      _ option: Configuration<SelectionValue>.Option,
-      _ tag: _Tag
+      _ option: Configuration<SelectionValue>.Option
     ) -> some View {
-      switch tag {
+      switch option.tag {
       case let .tagged(tag):
         option
           .selectionGuide(tag == configuration.selection ? .selection : .center)

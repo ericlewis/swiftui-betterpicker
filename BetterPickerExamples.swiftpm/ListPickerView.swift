@@ -46,8 +46,8 @@ struct ListPickerStyle: _PickerStyle {
         HStack {
           configuration.label
           Spacer()
-          configuration.content { view, tag in
-              .init(makeBadge(view, tag))
+          configuration.content { view in
+              .init(makeBadge(view))
           }
         }
       }
@@ -55,10 +55,9 @@ struct ListPickerStyle: _PickerStyle {
 
     @ViewBuilder
     func makeBadge(
-      _ option: Configuration<SelectionValue>.Option,
-      _ tag: _Tag
+      _ option: Configuration<SelectionValue>.Option
     ) -> some View {
-      switch tag {
+      switch option.tag {
       case let .tagged(tag):
         if tag == configuration.selection {
           option
@@ -82,8 +81,8 @@ struct ListPickerStyle: _PickerStyle {
 
     var body: some View {
       List {
-        configuration.content { view, tag in
-            .init(makeOption(view, tag))
+        configuration.content { view in
+            .init(makeOption(view))
         }
       }
       .navigationTitle(title)
@@ -91,10 +90,9 @@ struct ListPickerStyle: _PickerStyle {
 
     @ViewBuilder
     func makeOption(
-      _ option: Configuration<SelectionValue>.Option,
-      _ tag: _Tag
+      _ option: Configuration<SelectionValue>.Option
     ) -> some View {
-      switch tag {
+      switch option.tag {
       case let .tagged(tag):
         Button {
           configuration.selection = tag

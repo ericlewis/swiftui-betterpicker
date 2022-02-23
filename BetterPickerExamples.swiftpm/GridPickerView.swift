@@ -51,17 +51,16 @@ struct GridPickerStyle: _PickerStyle {
     var body: some View {
       LazyVGrid(columns: [.init(), .init(), .init()]) {
         configuration.content {
-          .init(makeOption($0, $1))
+          .init(makeOption($0))
         }
       }
     }
 
     @ViewBuilder
     func makeOption(
-      _ option: Configuration<SelectionValue>.Option,
-      _ tag: _Tag
+      _ option: Configuration<SelectionValue>.Option
     ) -> some View {
-      switch tag {
+      switch option.tag {
       case let .tagged(tag):
         Button {
           withAnimation {

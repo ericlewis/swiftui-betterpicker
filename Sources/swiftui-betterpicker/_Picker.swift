@@ -43,6 +43,7 @@ public struct _Picker<Label: View, Content: View, SelectionValue: Hashable>: Vie
           Configuration.Content(
             _VariadicView.Tree(
               Root(
+                selection: selection,
                 option: option
               ),
               content: { content }
@@ -58,11 +59,13 @@ public struct _Picker<Label: View, Content: View, SelectionValue: Hashable>: Vie
     typealias Children = _VariadicView.Children
     typealias Child = Children.Element
 
-    let option: (Configuration.Option, _Tag) -> Configuration.Option
+    let selection: AnyHashable
+    let option: (Configuration.Option) -> AnyView
 
     func body(children: Children) -> some View {
       ForEach(makeTaggedViews(children), id: \.view.id) { tagged in
-        option(.init(tagged.view), tagged.tag)
+        option(
+          .init(tagged.view.environment(\._isSelectedPickerValue, tagged.tag.value == selection), tag: tagged.tag))
       }
     }
 
