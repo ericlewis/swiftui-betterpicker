@@ -65,7 +65,13 @@ public struct _Picker<Label: View, Content: View, SelectionValue: Hashable>: Vie
     func body(children: Children) -> some View {
       ForEach(makeTaggedViews(children), id: \.view.id) { tagged in
         option(
-          .init(tagged.view.environment(\._isSelectedPickerValue, tagged.tag.value == selection), tag: tagged.tag))
+          .init(
+            tagged.view
+              .environment(\._isSelectedPickerValue, tagged.tag.value == selection)
+              .environment(\._pickerValueTag, tagged.tag),
+            tag: tagged.tag
+          )
+        )
       }
     }
 

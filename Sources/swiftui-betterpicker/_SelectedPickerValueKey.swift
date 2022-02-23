@@ -1,18 +1,18 @@
 import SwiftUI
 
-private struct _SelectedPickerValueKey: EnvironmentKey {
+private struct _IsSelectedPickerValueKey: EnvironmentKey {
   fileprivate static var defaultValue: Bool = false
 }
 
 extension EnvironmentValues {
   internal var _isSelectedPickerValue: Bool {
-    get { self[_SelectedPickerValueKey.self] }
-    set { self[_SelectedPickerValueKey.self] = newValue }
+    get { self[_IsSelectedPickerValueKey.self] }
+    set { self[_IsSelectedPickerValueKey.self] = newValue }
   }
 }
 
 extension EnvironmentValues {
   public var isSelectedPickerValue: Bool {
-    get { self[_SelectedPickerValueKey.self] }
+    get { self[_IsSelectedPickerValueKey.self] }
   }
 }
