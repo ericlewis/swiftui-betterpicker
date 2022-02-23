@@ -20,8 +20,6 @@ let package = Package(
             teamIdentifier: "F9PGNEMEHU",
             displayVersion: "1.0",
             bundleVersion: "1",
-            iconAssetName: "AppIcon",
-            accentColorAssetName: "AccentColor",
             supportedDeviceFamilies: [
                 .pad,
                 .phone
@@ -35,13 +33,13 @@ let package = Package(
         )
     ],
     dependencies: [
-      .package(path: "../")
+        .package(path: "/Users/ericlewis/Developer/swiftui-betterpicker")
     ],
     targets: [
         .executableTarget(
             name: "AppModule",
             dependencies: [
-              .product(name: "BetterPicker", package: "swiftui-betterpicker")
+                .product(name: "BetterPicker", package: "swiftui-betterpicker")
             ],
             path: "."
         )

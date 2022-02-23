@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct _PickerStyleConfiguration {
+public struct _PickerStyleConfiguration<SelectionValue: Hashable> {
   public struct Content: View {
     private let _view: AnyView
     internal init<V: View>(_ view: V) {
@@ -26,8 +26,8 @@ public struct _PickerStyleConfiguration {
   }
 
   @Binding
-  public var selection: AnyHashable
-  public let options: () -> Content
+  public var selection: SelectionValue
+  public let options: Content
   public let content: (@escaping (Option, _Tag) -> Option) -> Content
-  public let label: () -> Label
+  public let label: Label
 }

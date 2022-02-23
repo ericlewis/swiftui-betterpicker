@@ -5,11 +5,11 @@ extension _PickerStyle where Self == _DefaultPickerStyle {
 }
 
 public struct _DefaultPickerStyle: _PickerStyle {
-  public func makeBody(configuration: _PickerStyleConfiguration) -> some View {
+  public func makeBody(configuration: Configuration<SelectionValue>) -> some View {
     Picker(selection: configuration.$selection) {
-      configuration.options()
+      configuration.options
     } label: {
-      configuration.label()
+      configuration.label
     }
   }
 }

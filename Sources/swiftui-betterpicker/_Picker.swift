@@ -12,25 +12,26 @@ public enum _Tag {
   }
 }
 
-public struct _Picker<Label: View, Content: View, Selection: Hashable>: View {
-  private typealias Config = _PickerStyleConfiguration
+public struct _Picker<Label: View, Content: View, SelectionValue: Hashable>: View {
+  private typealias Configuration = _PickerStyleConfiguration
 
   @Binding
-  private var selection: Selection
+  private var selection: SelectionValue
 
   @Environment(\._pickerStyle)
   private var style
 
-  private let content: () -> Content
-  private let label: () -> Label
+  private let content: Content
+  private let label: Label
 
   public init(
-    selection: Binding<Selection>, @ViewBuilder content: @escaping () -> Content,
-    @ViewBuilder label: @escaping () -> Label
+    selection: Binding<SelectionValue>,
+    @ViewBuilder content: () -> Content,
+    @ViewBuilder label: () -> Label
   ) {
     self._selection = selection
-    self.content = content
-    self.label = label
+    self.content = content()
+    self.label = label()
   }
 
   public var body: some View {
@@ -38,21 +39,21 @@ public struct _Picker<Label: View, Content: View, Selection: Hashable>: View {
       configuration: _PickerStyleConfiguration(
         selection: .init(
           get: { AnyHashable(selection) },
-          set: { selection = $0 as! Selection }
+          set: { selection = $0 as! SelectionValue }
         ),
-        options: { .init(content()) },
+        options: .init(content),
         content: { option in
-          Config.Content(
+          Configuration.Content(
             _VariadicView.Tree(
               Root(
                 selection: selection,
                 option: option
               ),
-              content: content
+              content: { content }
             )
           )
         },
-        label: { .init(label()) }
+        label: .init(label)
       )
     )
   }
@@ -62,8 +63,8 @@ public struct _Picker<Label: View, Content: View, Selection: Hashable>: View {
     typealias Children = _VariadicView.Children
     typealias ChildView = Children.Element
 
-    let selection: Selection
-    let option: (Configuration.Option, _Tag) -> Configuration.Option
+    let selection: SelectionValue
+    let option: (Configuration<AnyHashable>.Option, _Tag) -> Configuration<AnyHashable>.Option
 
     func body(children: Children) -> some View {
       ForEach(makeTaggedViews(children), id: \.view.id) { tagged in
@@ -73,7 +74,7 @@ public struct _Picker<Label: View, Content: View, Selection: Hashable>: View {
 
     func makeTaggedViews(_ views: Children) -> [(view: ChildView, tag: _Tag)] {
       views.compactMap { view in
-        guard let tag: Selection = view._traits.tags().first else {
+        guard let tag: SelectionValue = view._traits.tags().first else {
           return (view, .untagged)
         }
         return (view, .tagged(tag))
@@ -84,7 +85,7 @@ public struct _Picker<Label: View, Content: View, Selection: Hashable>: View {
 
 extension _Picker where Label == Text {
   public init(
-    _ titleKey: LocalizedStringKey, selection: Binding<Selection>,
+    _ titleKey: LocalizedStringKey, selection: Binding<SelectionValue>,
     @ViewBuilder content: @escaping () -> Content
   ) {
     self.init(selection: selection, content: content) {
@@ -96,7 +97,7 @@ extension _Picker where Label == Text {
 extension _Picker where Label == Text {
   @_disfavoredOverload
   public init<S>(
-    _ title: S, selection: Binding<Selection>, @ViewBuilder content: @escaping () -> Content
+    _ title: S, selection: Binding<SelectionValue>, @ViewBuilder content: @escaping () -> Content
   ) where S: StringProtocol {
     self.init(selection: selection, content: content) {
       Text(title)

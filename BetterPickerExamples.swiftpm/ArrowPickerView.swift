@@ -41,12 +41,12 @@ extension _PickerStyle where Self == ArrowStyle {
 }
 
 struct ArrowStyle: _PickerStyle {
-  func makeBody(configuration: Configuration) -> some View {
+  func makeBody(configuration: Configuration<Self.SelectionValue>) -> some View {
     Style(configuration: configuration)
   }
 
   struct Style: View {
-    let configuration: Configuration
+    let configuration: Configuration<SelectionValue>
 
     @Environment(\.isEnabled)
     private var isEnabled
@@ -69,7 +69,7 @@ struct ArrowStyle: _PickerStyle {
 
     @ViewBuilder
     func makeOption(
-      _ option: Configuration.Option,
+      _ option: Configuration<SelectionValue>.Option,
       _ tag: _Tag
     ) -> some View {
       switch tag {

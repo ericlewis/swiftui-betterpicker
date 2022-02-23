@@ -9,7 +9,7 @@ struct GridPickerView: View {
     case purple
     case yellow
     case pink
-    
+
     var color: Color {
       switch self {
       case .red: return .red
@@ -21,10 +21,10 @@ struct GridPickerView: View {
       }
     }
   }
-  
+
   @State
   private var selection = Colors.red
-  
+
   var body: some View {
     _Picker("Grid", selection: $selection) {
       ForEach(Colors.allCases, id: \.self) {
@@ -41,13 +41,13 @@ extension _PickerStyle where Self == GridPickerStyle {
 }
 
 struct GridPickerStyle: _PickerStyle {
-  func makeBody(configuration: Configuration) -> some View {
+  func makeBody(configuration: Configuration<Self.SelectionValue>) -> some View {
     Style(configuration: configuration)
   }
-  
+
   struct Style: View {
-    let configuration: Configuration
-    
+    let configuration: Configuration<SelectionValue>
+
     var body: some View {
       LazyVGrid(columns: [.init(), .init(), .init()]) {
         configuration.content {
@@ -55,10 +55,10 @@ struct GridPickerStyle: _PickerStyle {
         }
       }
     }
-    
+
     @ViewBuilder
     func makeOption(
-      _ option: Configuration.Option,
+      _ option: Configuration<SelectionValue>.Option,
       _ tag: _Tag
     ) -> some View {
       switch tag {
